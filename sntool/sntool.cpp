@@ -84,8 +84,10 @@ int dehex(const char*in,const char*out)
             {
             case 'A'...'F':
                 c=c-'A'+'a';
+                break;
             case 'a'...'f':
                 c=c-'a'+'0'+10;
+                break;
             case '0'...'9':
                 c=c-'0';
                 octet=1-octet;
@@ -101,8 +103,10 @@ int dehex(const char*in,const char*out)
                     memcpy(b_out+outLen,b_tmp,lineLen);
                     outLen+=lineLen;
                 }
+                break;
             case ':':
                 lineLen=0;
+                break;
             case ' ':
                 octet=0;
                 break;
@@ -131,7 +135,7 @@ int checksum(const char*in,int fix)
     size_t fs=loadFile(in,0);
     if(fs)
     {
-        info_printf("input: %s, fs: %.8x\n",in,fs);
+        info_printf("input: %s, fs: %.8lx\n",in,fs);
         uint8_t data[fs+3];
         fs=loadFile(in,data);
         uint32_t*data32=reinterpret_cast<uint32_t*>(data);
@@ -264,7 +268,7 @@ int hsqs(const char*in0)
                 uint32_t bs=0x1000;//le32toh(data32[3]);
                 uint32_t fs1=le32toh(data32[0xa]);
                 fs1=((fs1+bs-1)/bs)*bs;
-                info_printf("output fs: %zu\n",fs1);
+                info_printf("output fs: %u\n",fs1);
                 if(fs1<fs0)
                     saveFile(in0,data,fs1);
                 free(data);
